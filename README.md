@@ -2,7 +2,9 @@
 
 ## Installation
 
-Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `d`-dimensional images. This can take a few minutes because we need to compile it from scratch. Here a step-by-step guide:
+Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `d`-dimensional images. This can take a few minutes because we need to compile it from scratch. Here a step-by-step guide for Mac:
+
+0. Install `xcode-select --install`
 
 1. For this to work we also need `cmake` installed and in your system path. On mac we can download frome here. After we succesfully installed `cmake` we need to make it available from the command line:
 
