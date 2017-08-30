@@ -24,6 +24,16 @@ cd SimpleITK-build
 ccmake ../SimpleITK/SuperBuild
 ```
 
+Then enter `c`. (If it askes something about Java press OK.) Then toggle `OFF` the following flags: 
+
+* `BUILD_EXAMPLES`
+* `BUILD_TESTING`
+*  `WRAP_PYTHON`
+*  `WRAP_RUBY`
+*  `WRAP_TCL`
+
+Just keep `WRAP_R` toggled `ON`. 
+
 4. Now it's compiled and we can install it in `R`:
 
 ```
