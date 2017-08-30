@@ -32,4 +32,5 @@ cognition = ...
 res = braincog(morphometry = morphometry, 
                cognition = cognition)
 summary(res)
+plot(res)
 ```
