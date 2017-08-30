@@ -2,16 +2,21 @@
 
 ## Installation
 
-Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `N`-dimensional images. This can take a few hours because the entire source code need to be compiled from scratch. To speed up you can use multiple cores like this: 
+Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `N`-dimensional images. This can take a few minutes because we need to compile it from scratch. Here a step-by-step guide:
 
-```
-devtools::install_github("SimpleITK/SimpleITKRInstaller", args=c('--configure-vars="MAKEJ=4"'))
-```
-
-For this to work we also need `cmake` installed and in your system path. On mac we can download frome here. After we succesfully installed `cmake` we need to make it available from the command line:
-
+1. For this to work we also need `cmake` installed and in your system path. On mac we can download frome here. After we succesfully installed `cmake` we need to make it available from the command line:
 ```
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
+```
+2. Now we will follow the steps from the ITK [wiki](https://itk.org/Wiki/SimpleITK/GettingStarted):
+
+```
+git clone http://itk.org/SimpleITK.git
+mkdir SimpleITK-build
+cd SimpleITK-build
+cmake ../SimpleITK/SuperBuild
+cd SimpleITK-build/Wrapping/R/Packaging
+R CMD INSTALL SimpleITK
 ```
 
 Now we are ready to install the package `braincog`:
