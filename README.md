@@ -16,12 +16,22 @@ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 git clone https://itk.org/SimpleITK.git
 mkdir SimpleITK-build
 cd SimpleITK-build
-cmake ../SimpleITK/SuperBuild
+```
+
+3. Configure build and disable some feature that we don't need to speed-up compilaton time:
+
+```
+ccmake ../SimpleITK/SuperBuild
+```
+
+4. Now it's compiled and we can install it in `R`:
+
+```
 cd SimpleITK-build/Wrapping/R/Packaging
 R CMD INSTALL SimpleITK
 ```
 
-3. Finally, we are ready to install the package `braincog`:
+5. Finally, we are ready to install the package `braincog`:
 
 ``` r
 install.packages("devtools")
