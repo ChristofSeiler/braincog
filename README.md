@@ -21,33 +21,30 @@ cd SimpleITK-build
 3. Configure build and disable some feature that we don't need to speed-up compilaton time:
 
 ```
-ccmake ../SimpleITK/SuperBuild
+cmake 
+-D BUILD_EXAMPLES=OFF \
+-D BUILD_TESTING=OFF \
+-D WRAP_PYTHON=OFF \ 
+-D WRAP_RUBY=OFF \
+-D WRAP_TCL=OFF \
+-D WRAP_R=ON \
+../SimpleITK/SuperBuild
 ```
 
-Then press `c`. If it complains about about Java just press OK and continue. Then toggle `OFF` the following flags: 
-
-* `BUILD_EXAMPLES`
-* `BUILD_TESTING`
-*  `WRAP_PYTHON`
-*  `WRAP_RUBY`
-*  `WRAP_TCL`
-
-Just keep `WRAP_R` toggled `ON`. Then press `c` followed by `g`.
-
-5. Compile (the number indicates how many cores we want to use):
+4. Compile (the number indicates how many cores we want to use):
 
 ```
 make -j4
 ```
 
-6. Now it's compiled and we can install it in `R`:
+5. Now it's compiled and we can install it in `R`:
 
 ```
 cd SimpleITK-build/Wrapping/R/Packaging
 R CMD INSTALL SimpleITK
 ```
 
-7. Finally, we are ready to install the package `braincog`:
+6. Finally, we are ready to install the package `braincog`:
 
 ``` r
 install.packages("devtools")
