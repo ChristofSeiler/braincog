@@ -22,7 +22,7 @@ This can take a few minutes because we need to compile it from scratch. Here is 
 xcode-select --install
 ```
 
-2. For this to work we also need `cmake` installed and in your system path. On mac we can download frome here. After we succesfully installed `cmake` we need to make it available from the command line:
+2. For this to work we also need `cmake` installed and in your system path. We can download from [here](https://cmake.org/download/). After we succesfully installed `cmake` we need to make it available from the command line:
 
 ```
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
