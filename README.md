@@ -1,8 +1,20 @@
-# R package `braincog`
+# R Package `braincog`
 
-## Installation
+Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `d`-dimensional images. 
 
-Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `d`-dimensional images. This can take a few minutes because we need to compile it from scratch. Here a step-by-step guide for Mac:
+## Easy Installation on macOS Sierra
+
+Pre-compiled on macOS Sierra 10.12.6. To install `SimpleITK` package:
+
+```
+curl -O https://github.com/ChristofSeiler/SimpleITK_Binaries/raw/master/SimpleITK.zip
+unzip SimpleITK.zip
+R CMD INSTALL SimpleITK
+```
+
+## Installation on Other Systems
+
+This can take a few minutes because we need to compile it from scratch. Here is a step-by-step guide for macOS:
 
 1. Install command line developer tools:
 
@@ -10,7 +22,7 @@ Before we can install `braincog` we have to install `SimpleITK`, an R wrapper fo
 xcode-select --install
 ```
 
-2. For this to work we also need `cmake` installed and in your system path. On mac we can download frome here. After we succesfully installed `cmake` we need to make it available from the command line:
+2. For this to work we also need `cmake` installed and in your system path. We can download from [here](https://cmake.org/download/). After we succesfully installed `cmake` we need to make it available from the command line:
 
 ```
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
@@ -61,9 +73,9 @@ devtools::install_github("ChristofSeiler/braincog")
 
 ``` r
 library("braincog")
-# store brain data in an n x p_b matrix
+# store brain data in an n x num_voxels matrix
 morphometry = ...
-# store cognition data in an n x p_c matrix
+# store cognition data in an n x num_tests matrix
 cognition = ...
 res = braincog(morphometry = morphometry, 
                cognition = cognition)
