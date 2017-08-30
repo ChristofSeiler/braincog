@@ -10,7 +10,7 @@ devtools::install_github("SimpleITK/SimpleITKRInstaller", args=c('--configure-va
 
 For this to work we also need `cmake` installed and in your system path. On mac we can download frome here. After we succesfully installed `cmake` we need to make it available from the command line:
 
-``` bash
+```
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
 
