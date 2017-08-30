@@ -1,4 +1,4 @@
-# R package `braincog`
+# R Package `braincog`
 
 Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `d`-dimensional images. 
 
