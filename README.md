@@ -16,7 +16,7 @@ xcode-select --install
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
 
-3. Now we follow the steps from the ITK [wiki](https://itk.org/Wiki/SimpleITK/GettingStarted):
+3. Now we follow the steps from the `SimpleITK` building [website](https://simpleitk.readthedocs.io/en/master/Documentation/docs/source/building.html):
 
 ```
 git clone https://itk.org/SimpleITK.git
