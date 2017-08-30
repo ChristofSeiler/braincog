@@ -13,7 +13,7 @@ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 2. Now we follow the steps from the ITK [wiki](https://itk.org/Wiki/SimpleITK/GettingStarted):
 
 ```
-git clone http://itk.org/SimpleITK.git
+git clone https://itk.org/SimpleITK.git
 mkdir SimpleITK-build
 cd SimpleITK-build
 cmake ../SimpleITK/SuperBuild
