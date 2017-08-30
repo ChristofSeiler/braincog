@@ -8,7 +8,7 @@ Before we can install `braincog` we have to install `SimpleITK`, an R wrapper fo
 ```
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
-2. Now we will follow the steps from the ITK [wiki](https://itk.org/Wiki/SimpleITK/GettingStarted):
+2. Now we follow the steps from the ITK [wiki](https://itk.org/Wiki/SimpleITK/GettingStarted):
 
 ```
 git clone http://itk.org/SimpleITK.git
@@ -19,7 +19,7 @@ cd SimpleITK-build/Wrapping/R/Packaging
 R CMD INSTALL SimpleITK
 ```
 
-Now we are ready to install the package `braincog`:
+Finally, we are ready to install the package `braincog`:
 
 ``` r
 install.packages("devtools")
