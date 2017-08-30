@@ -19,19 +19,19 @@ This can take a few minutes because we need to compile it from scratch. Here is 
 
 1. Install command line developer tools:
 
-```
+```bash
 xcode-select --install
 ```
 
 2. For this to work we also need `cmake` installed and in your system path. We can download from [here](https://cmake.org/download/). After we succesfully installed `cmake` we need to make it available from the command line:
 
-```
+```bash
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
 
 3. Now we follow the steps from the `SimpleITK` building [documentation](https://simpleitk.readthedocs.io/en/master/Documentation/docs/source/building.html):
 
-```
+```bash
 git clone https://itk.org/SimpleITK.git
 mkdir SimpleITK-build
 cd SimpleITK-build
@@ -39,7 +39,7 @@ cd SimpleITK-build
 
 4. Configure build and disable some feature that we don't need to speed-up compilaton time:
 
-```
+```bash
 cmake \
 -D BUILD_EXAMPLES=OFF \
 -D BUILD_TESTING=OFF \
@@ -52,13 +52,13 @@ cmake \
 
 5. Compile (the number indicates how many cores we want to use):
 
-```
+```bash
 make -j4
 ```
 
 6. Now it's compiled and we can install it in `R`:
 
-```
+```bash
 cd SimpleITK-build/Wrapping/R/Packaging
 R CMD INSTALL SimpleITK
 ```
