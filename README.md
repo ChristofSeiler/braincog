@@ -1,8 +1,20 @@
 # R package `braincog`
 
-## Installation
+Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `d`-dimensional images. 
 
-Before we can install `braincog` we have to install `SimpleITK`, an R wrapper for [ITK](https://itk.org/). ITK provides the latest and robust medical image processing tools for `d`-dimensional images. This can take a few minutes because we need to compile it from scratch. Here a step-by-step guide for Mac:
+## Easy Installation on macOS Sierra
+
+Pre-compiled on macOS Sierra 10.12.6. To install `SimpleITK` package:
+
+```
+curl -O https://github.com/ChristofSeiler/SimpleITK_Binaries/raw/master/SimpleITK.zip
+unzip SimpleITK.zip
+R CMD INSTALL SimpleITK
+```
+
+## Installation on Other Systems
+
+This can take a few minutes because we need to compile it from scratch. Here a step-by-step guide for Mac:
 
 1. Install command line developer tools:
 
