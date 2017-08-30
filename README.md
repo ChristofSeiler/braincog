@@ -24,7 +24,7 @@ cd SimpleITK-build
 ccmake ../SimpleITK/SuperBuild
 ```
 
-Then enter `c`. If it complains about about Java just press OK and continue. Then toggle `OFF` the following flags: 
+Then press `c`. If it complains about about Java just press OK and continue. Then toggle `OFF` the following flags: 
 
 * `BUILD_EXAMPLES`
 * `BUILD_TESTING`
