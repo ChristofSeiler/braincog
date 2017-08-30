@@ -7,7 +7,8 @@ Before we can install `braincog` we have to install `SimpleITK`, an R wrapper fo
 Pre-compiled on macOS Sierra 10.12.6. To install `SimpleITK` package:
 
 ```
-curl -O https://github.com/ChristofSeiler/SimpleITK_Binaries/raw/master/SimpleITK.zip
+git clone https://github.com/ChristofSeiler/SimpleITK_Binaries.git
+cd SimpleITK_Binaries
 unzip SimpleITK.zip
 R CMD INSTALL SimpleITK
 ```
