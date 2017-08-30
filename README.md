@@ -18,7 +18,7 @@ Now we are ready to install the package `braincog`:
 
 ```
 install.packages("devtools")
-devtools::install_github("ChristofSeiler/CovRegFC")
+devtools::install_github("ChristofSeiler/braincog")
 ```
 
 ## Getting Started
