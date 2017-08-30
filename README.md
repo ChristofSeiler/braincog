@@ -21,7 +21,7 @@ cd SimpleITK-build
 3. Configure build and disable some feature that we don't need to speed-up compilaton time:
 
 ```
-cmake 
+cmake \
 -D BUILD_EXAMPLES=OFF \
 -D BUILD_TESTING=OFF \
 -D WRAP_PYTHON=OFF \ 
