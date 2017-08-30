@@ -61,9 +61,9 @@ devtools::install_github("ChristofSeiler/braincog")
 
 ``` r
 library("braincog")
-# store brain data in an n x p_b matrix
+# store brain data in an n x num_voxels matrix
 morphometry = ...
-# store cognition data in an n x p_c matrix
+# store cognition data in an n x num_tests matrix
 cognition = ...
 res = braincog(morphometry = morphometry, 
                cognition = cognition)
