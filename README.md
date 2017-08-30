@@ -14,7 +14,7 @@ R CMD INSTALL SimpleITK
 
 ## Installation on Other Systems
 
-This can take a few minutes because we need to compile it from scratch. Here a step-by-step guide for Mac:
+This can take a few minutes because we need to compile it from scratch. Here is a step-by-step guide for macOS:
 
 1. Install command line developer tools:
 
