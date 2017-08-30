@@ -29,7 +29,7 @@ library("braincog")
 morphometry = ...
 # store cognition data in an n x p_c matrix
 cognition = ...
-braincog_res = braincog(morphometry = morphometry, 
-                        cognition = cognition)
-summary(braincog_res)
+res = braincog(morphometry = morphometry, 
+               cognition = cognition)
+summary(res)
 ```
