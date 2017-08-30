@@ -34,14 +34,20 @@ Then press `c`. If it complains about about Java just press OK and continue. The
 
 Just keep `WRAP_R` toggled `ON`. Then press `c` followed by `g`.
 
-4. Now it's compiled and we can install it in `R`:
+5. Compile (the number indicates how many cores we want to use):
+
+```
+make -j4
+```
+
+6. Now it's compiled and we can install it in `R`:
 
 ```
 cd SimpleITK-build/Wrapping/R/Packaging
 R CMD INSTALL SimpleITK
 ```
 
-5. Finally, we are ready to install the package `braincog`:
+7. Finally, we are ready to install the package `braincog`:
 
 ``` r
 install.packages("devtools")
