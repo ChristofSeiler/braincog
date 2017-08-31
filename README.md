@@ -72,7 +72,7 @@ devtools::install_github("ChristofSeiler/braincog")
 
 ## Getting Started
 
-Morphometry data needs to be estimated using registration algorithms such as [ANTs](https://github.com/ANTsX/ANTs). Group information is encoded in a factor `fac` variable with two levels. 
+The input is morphometry data from registration algorithms such as [ANTs](https://github.com/ANTsX/ANTs). We encode group labels using a factor `fac` variable with two levels. 
 
 ``` r
 library("braincog")
