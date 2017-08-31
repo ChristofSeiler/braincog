@@ -72,11 +72,13 @@ devtools::install_github("ChristofSeiler/braincog")
 
 ## Getting Started
 
+Morphometry data needs to be estimated using registration algorithms such as ants. Group information is encoded in a factor `fac` variable with two levels. 
+
 ``` r
 library("braincog")
 # morphometry: (n x num_voxels) matrix
 # cognition: (n x num_tests) matrix
-# group factor with two levels fac: (n x 1) vector
+# fac: (n x 1) vector
 res = braincog(morphometry = morphometry, 
                cognition = cognition,
                fac = group)
