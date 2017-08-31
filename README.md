@@ -72,14 +72,16 @@ devtools::install_github("ChristofSeiler/braincog")
 
 ## Getting Started
 
+The input is `morphometry` data from registration algorithms such as [ANTs](https://github.com/ANTsX/ANTs). We encode group labels using a factor `fac` variable with two levels. 
+
 ``` r
 library("braincog")
-# store brain data in an n x num_voxels matrix
-morphometry = ...
-# store cognition data in an n x num_tests matrix
-cognition = ...
+# morphometry: (n x num_voxels) matrix
+# cognition: (n x num_tests) matrix
+# fac: (n x 1) vector
 res = braincog(morphometry = morphometry, 
-               cognition = cognition)
+               cognition = cognition,
+               fac = group)
 summary(res)
 plot(res)
 ```
