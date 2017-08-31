@@ -3,23 +3,33 @@
 #' @import PMA
 #' @export
 #'
-compute_cca_da = function(morphometry, cognition) {
-  res_cca_list = lapply(list(data1,data2),function(data) {
+compute_cca_da = function(fac, morphometry, cognition) {
+
+  # split groups into two data
+  data_list = lapply(levels(fac),function(group) {
+    data = NULL
+    data$X = cognition[fac == group, ]
+    data$Z = morphometry[fac == group, ]
+    data
+  })
+
+  # run two separate sparse CCA
+  res_cca_list = lapply(data_list,function(data) {
     penaltyzs = seq(0.1,0.5,0.1)
     perm_out = CCA.permute(x = data$X, z = data$Z,
                            typex = "standard",
                            typez = "standard",
                            penaltyxs = 1,
                            penaltyzs = penaltyzs,
-                           standardize = FALSE,
+                           standardize = TRUE,
                            nperms = 20)
-    out = CCA(x = data$X, z = data$Z,
-              typex = "standard",
-              typez = "standard",
-              penaltyx = 1,
-              penaltyz = perm_out$bestpenaltyz,
-              standardize = FALSE,
-              v = perm_out$v.init)
+    CCA(x = data$X, z = data$Z,
+        typex = "standard",
+        typez = "standard",
+        penaltyx = 1,
+        penaltyz = perm_out$bestpenaltyz,
+        standardize = TRUE,
+        v = perm_out$v.init)
   })
 
   # difference in coefficients

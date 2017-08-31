@@ -4,7 +4,7 @@
 \alias{compute_cca_da}
 \title{Compute difference vector.}
 \usage{
-compute_cca_da(morphometry, cognition)
+compute_cca_da(fac, morphometry, cognition)
 }
 \description{
 Compute difference vector.
