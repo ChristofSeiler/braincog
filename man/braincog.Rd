@@ -5,7 +5,7 @@
 \title{Differential sparse canonical correlation analysis.}
 \usage{
 braincog(fac, morphometry, cognition, gray_matter, top = 100,
-  num_perm = 1000, alpha = 0.05)
+  num_perm = 1000, alpha = 0.05, slurm = FALSE, num_cores = 4)
 }
 \description{
 Differential sparse canonical correlation analysis.

@@ -4,6 +4,7 @@
 #' @import SimpleITK
 #' @import magrittr
 #' @import tidyverse
+#' @import BiocParallel
 #' @export
 #'
 braincog = function(fac,
@@ -12,7 +13,9 @@ braincog = function(fac,
                     gray_matter,
                     top = 100,
                     num_perm = 1000,
-                    alpha = 0.05) {
+                    alpha = 0.05,
+                    slurm = FALSE,
+                    num_cores = 4) {
 
   # random permutations of levels
   fac_list = lapply(seq(num_perm-1),function(i) sample(fac))
@@ -36,40 +39,62 @@ braincog = function(fac,
     seg = label_cluster(sign_diff_arr)
 
     # count component size (background is excluded)
-    cs = cluster_size(k = 1:100,arr = seg)
+    cs = tibble(cluster_size(k = 1:100,arr = seg))
 
     if(return_seg) return(seg) else return(cs)
   }
 
-  # run in parallel
-  param = BatchJobsParam(workers = length(fac_list),
-                         resources = list(ntasks=1,ncpus=1,mem=4000,walltime=180),
-                         cluster.functions = makeClusterFunctionsSLURM("slurm.tmpl"),
-                         log = TRUE,
-                         logdir = ".",
-                         progressbar = TRUE,
-                         cleanup = FALSE,
-                         seed = 0xdada)
+  # run either on slurm clusrter or multi-threaded
+  param = NULL
+  if(slurm) {
+    slurm_settings = system.file("exec", "slurm.tmpl", package = "braincog")
+    param = BatchJobsParam(workers = length(fac_list),
+                           resources = list(ntasks=1,ncpus=1,mem=4000,walltime=180),
+                           cluster.functions = makeClusterFunctionsSLURM(slurm_settings),
+                           log = TRUE,
+                           logdir = ".",
+                           progressbar = TRUE,
+                           cleanup = FALSE,
+                           seed = 0xdada)
+  } else {
+    param = MulticoreParam(workers = num_cores,
+                           tasks = length(fac_list),
+                           log = TRUE,
+                           logdir = ".",
+                           progressbar = TRUE,
+                           cleanup = FALSE,
+                           seed = 0xdada)
+  }
   cs_perm = bplapply(fac_list,
                      fun,
                      BPPARAM = param,
                      morphometry = morphometry,
                      cognition = cognition,
                      gray_matter = gray_matter,
-                     top = top) %>% do.call(rbind,.)
-
+                     top = top) %>% bind_cols %>% t
+  cs_perm[is.na(cs_perm)] = 0
   pvalues = sapply(seq(ncol(cs_perm)),
-                   function(k)
-                     sum(cs_perm[1,k] <= cs_perm[,k])/nrow(cs_perm))
-  significant_clusters = which(pvalues %>% p.adjust(method = "BH") < alpha)
+                   function(k) mean(cs_perm[1,k] <= cs_perm[,k]))
+  cluster_labels = which(pvalues %>%
+                           p.adjust(method = "BH") < alpha) +
+    1 # add one to account for background
+
+  # save everything in result list
   res = NULL
-  if(length(significant_clusters) > 0) {
+  res$gray_matter = gray_matter
+  res$top = top
+  res$num_perm = num_perm
+  res$alpha = alpha
+  res$slurm = slurm
+  res$num_cores = num_cores
+  if(length(cluster_labels) > 0) {
     # recompute the unpermuted case
     seg = fun(fac,morphometry,cognition,gray_matter,top,return_seg = TRUE)
-    significant_clusters = significant_clusters+1 # add background
     seg_select = array(0,dim = dim(gray_matter))
-    for(label in significant_clusters) seg_select[seg==label] = label
-    res$seg = seg_select
+    for(label in cluster_labels) seg_select[seg==label] = label
+    res$seg_select = seg_select
+    res$cs_perm = cs_perm
+    res$pvalues = pvalues
   }
 
   # define class for plotting and summary
