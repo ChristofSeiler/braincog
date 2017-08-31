@@ -74,12 +74,12 @@ devtools::install_github("ChristofSeiler/braincog")
 
 ``` r
 library("braincog")
-# store brain data in an n x num_voxels matrix
-morphometry = ...
-# store cognition data in an n x num_tests matrix
-cognition = ...
+# morphometry: (n x num_voxels) matrix
+# cognition: (n x num_tests) matrix
+# group factor with two levels fac: (n x 1) vector
 res = braincog(morphometry = morphometry, 
-               cognition = cognition)
+               cognition = cognition,
+               fac = group)
 summary(res)
 plot(res)
 ```
