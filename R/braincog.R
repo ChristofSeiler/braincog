@@ -17,7 +17,8 @@ braincog = function(fac,
                     num_perm = 1000,
                     alpha = 0.05,
                     slurm = FALSE,
-                    num_cores = 4) {
+                    num_cores = 4,
+                    seed = 0xdada) {
 
   # random permutations of levels
   fac_list = lapply(seq(num_perm-1),function(i) sample(fac))
@@ -46,7 +47,7 @@ braincog = function(fac,
     if(return_seg) return(seg) else return(cs)
   }
 
-  # run either on slurm clusrter or multi-threaded
+  # run either on slurm cluster or multi-threaded
   param = NULL
   if(slurm) {
     slurm_settings = system.file("exec", "slurm.tmpl", package = "braincog")
@@ -57,7 +58,7 @@ braincog = function(fac,
                            logdir = ".",
                            progressbar = TRUE,
                            cleanup = FALSE,
-                           seed = 0xdada)
+                           seed = seed)
   } else {
     param = MulticoreParam(workers = num_cores,
                            tasks = length(fac_list),
@@ -65,7 +66,7 @@ braincog = function(fac,
                            logdir = ".",
                            progressbar = TRUE,
                            cleanup = FALSE,
-                           seed = 0xdada)
+                           seed = seed)
   }
   cs_perm = bplapply(fac_list,
                      fun,
