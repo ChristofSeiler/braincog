@@ -79,8 +79,7 @@ braincog = function(fac,
   cs_perm[is.na(cs_perm)] = 0
   pvalues = sapply(seq(ncol(cs_perm)),
                    function(k) mean(cs_perm[1,k] <= cs_perm[,k]))
-  cluster_labels = which(pvalues %>%
-                           p.adjust(method = "BH") < alpha) +
+  cluster_labels = which(p.adjust(pvalues,method = "BH") < alpha) +
     1 # add one to account for background
 
   # save everything in result list
@@ -91,15 +90,14 @@ braincog = function(fac,
   res$alpha = alpha
   res$slurm = slurm
   res$num_cores = num_cores
-  if(length(cluster_labels) > 0) {
-    # recompute the unpermuted case
-    seg = fun(fac,morphometry,cognition,gray_matter,top,return_seg = TRUE)
-    seg_select = array(0,dim = dim(gray_matter))
-    for(label in cluster_labels) seg_select[seg==label] = label
-    res$seg_select = seg_select
-    res$cs_perm = cs_perm
-    res$pvalues = pvalues
-  }
+  # recompute the unpermuted case
+  seg = fun(fac,morphometry,cognition,gray_matter,top,return_seg = TRUE)
+  seg_select = array(0,dim = dim(gray_matter))
+  for(label in cluster_labels) seg_select[seg==label] = label
+  res$seg_select = seg_select
+  res$cs_perm = cs_perm
+  res$pvalues = pvalues
+  res$cluster_labels = cluster_labels
 
   # define class for plotting and summary
   class(res) = "braincog"
