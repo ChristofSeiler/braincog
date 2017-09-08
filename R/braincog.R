@@ -5,6 +5,8 @@
 #' @import magrittr
 #' @import tidyverse
 #' @import BiocParallel
+#' @import parallel
+#' @import BatchJobs
 #' @export
 #'
 braincog = function(fac,
