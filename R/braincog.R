@@ -27,10 +27,7 @@ braincog = function(fac,
   fac_list = append(list(fac),fac_list)
 
   # for cluster
-  fun = function(fac,morphometry,cognition,gray_matter,
-                 penaltyz = penaltyz,
-                 top = top,
-                 return_seg = FALSE) {
+  fun = function(fac,morphometry,cognition,gray_matter,penaltyz,top = top,return_seg = FALSE) {
     library("braincog")
 
     # compute the difference vector
@@ -58,7 +55,7 @@ braincog = function(fac,
   if(slurm) {
     slurm_settings = system.file("exec", "slurm.tmpl", package = "braincog")
     param = BatchJobsParam(workers = length(fac_list),
-                           resources = list(ntasks=1,ncpus=1,mem=8000,walltime=120),
+                           resources = list(ntasks=1,ncpus=1,mem=8000,walltime=10),
                            cluster.functions = makeClusterFunctionsSLURM(slurm_settings),
                            log = TRUE,
                            logdir = ".",
@@ -98,7 +95,7 @@ braincog = function(fac,
   res$slurm = slurm
   res$num_cores = num_cores
   # recompute the unpermuted case
-  seg = fun(fac,morphometry,cognition,gray_matter,top,return_seg = TRUE)
+  seg = fun(fac,morphometry,cognition,gray_matter,penaltyz,top,return_seg = TRUE)
   seg_select = array(0,dim = dim(gray_matter))
   for(label in cluster_labels) seg_select[seg==label] = label
   res$seg_select = seg_select
