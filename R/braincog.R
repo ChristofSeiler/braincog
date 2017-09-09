@@ -14,6 +14,7 @@ braincog = function(fac,
                     morphometry,
                     cognition,
                     gray_matter,
+                    penaltyz,
                     top = 100,
                     num_perm = 1000,
                     alpha = 0.05,
@@ -26,13 +27,17 @@ braincog = function(fac,
   fac_list = append(list(fac),fac_list)
 
   # for cluster
-  fun = function(fac,morphometry,cognition,gray_matter,top = top,return_seg = FALSE) {
+  fun = function(fac,morphometry,cognition,gray_matter,
+                 penaltyz = penaltyz,
+                 top = top,
+                 return_seg = FALSE) {
     library("braincog")
 
     # compute the difference vector
     sign_diff = compute_cca_da(fac = fac,
                                morphometry = morphometry,
-                               cognition = cognition)
+                               cognition = cognition,
+                               penaltyz = penaltyz)
 
     # convert to image
     sign_diff_arr = array(0, # background
@@ -75,6 +80,7 @@ braincog = function(fac,
                      morphometry = morphometry,
                      cognition = cognition,
                      gray_matter = gray_matter,
+                     penaltyz = penaltyz,
                      top = top) %>% bind_cols %>% t
   cs_perm[is.na(cs_perm)] = 0
   pvalues = sapply(seq(ncol(cs_perm)),
