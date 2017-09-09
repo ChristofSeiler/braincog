@@ -29,7 +29,7 @@ compute_cca_da = function(fac, morphometry, cognition, penaltyz) {
         penaltyx = 1,
         penaltyz = penaltyz,
         #penaltyz = perm_out$bestpenaltyz,
-        standardize = TRUE)
+        standardize = FALSE)
         #, v = perm_out$v.init)
   })
 
