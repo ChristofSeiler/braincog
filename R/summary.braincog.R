@@ -15,6 +15,5 @@ summary.braincog = function(fit) {
          pvalue = pvalues,
          pvalue_adj = pvalues %>%
            p.adjust(method = "BH") %>%
-           round(digits = 2)) %>%
-    print(n = Inf)
+           round(digits = 2))
 }
