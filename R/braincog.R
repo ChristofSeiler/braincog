@@ -15,7 +15,7 @@ braincog = function(fac,
                     cognition,
                     gray_matter,
                     penaltyz,
-                    top = 100,
+                    min_clustersize,
                     num_perm = 1000,
                     alpha = 0.05,
                     slurm = FALSE,
@@ -27,8 +27,11 @@ braincog = function(fac,
   fac_list = append(list(fac),fac_list)
 
   # for cluster
-  fun = function(fac,morphometry,cognition,gray_matter,penaltyz,top = top,return_seg = FALSE) {
+  fun = function(fac,morphometry,cognition,gray_matter,penaltyz,return_seg = FALSE) {
     library("braincog")
+
+    # define max number of cluster sizes
+    top = 1000
 
     # compute the difference vector
     sign_diff = compute_cca_da(fac = fac,
@@ -45,7 +48,7 @@ braincog = function(fac,
     seg = label_cluster(sign_diff_arr)
 
     # count component size (background is excluded)
-    cs = tibble(cluster_size(k = 1:100,arr = seg))
+    cs = tibble(cluster_size(k = 1:top,arr = seg))
 
     if(return_seg) return(seg) else return(cs)
   }
@@ -77,11 +80,12 @@ braincog = function(fac,
                      morphometry = morphometry,
                      cognition = cognition,
                      gray_matter = gray_matter,
-                     penaltyz = penaltyz,
-                     top = top) %>% bind_cols %>% t
+                     penaltyz = penaltyz) %>% bind_cols %>% t
   cs_perm[is.na(cs_perm)] = 0
   pvalues = sapply(seq(ncol(cs_perm)),
                    function(k) mean(cs_perm[1,k] <= cs_perm[,k]))
+  # keep only pvalues that are bigger than predefined min detectable size
+  pvalues = pvalues[cs_perm[1,] > min_clustersize]
   cluster_labels = which(p.adjust(pvalues,method = "BH") < alpha) +
     1 # add one to account for background
 
@@ -89,13 +93,13 @@ braincog = function(fac,
   res = NULL
   res$gray_matter = gray_matter
   res$penaltyz = penaltyz
-  res$top = top
+  res$min_clustersize = min_clustersize
   res$num_perm = num_perm
   res$alpha = alpha
   res$slurm = slurm
   res$num_cores = num_cores
   # recompute the unpermuted case
-  seg = fun(fac,morphometry,cognition,gray_matter,penaltyz,top,return_seg = TRUE)
+  seg = fun(fac,morphometry,cognition,gray_matter,penaltyz,return_seg = TRUE)
   res$seg = seg
   seg_select = array(0,dim = dim(gray_matter))
   for(label in cluster_labels) seg_select[seg==label] = label
