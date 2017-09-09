@@ -91,6 +91,7 @@ braincog = function(fac,
   # save everything in result list
   res = NULL
   res$gray_matter = gray_matter
+  res$penaltyz = penaltyz
   res$top = top
   res$num_perm = num_perm
   res$alpha = alpha
