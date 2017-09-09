@@ -96,6 +96,7 @@ braincog = function(fac,
   res$num_cores = num_cores
   # recompute the unpermuted case
   seg = fun(fac,morphometry,cognition,gray_matter,penaltyz,top,return_seg = TRUE)
+  res$seg = seg
   seg_select = array(0,dim = dim(gray_matter))
   for(label in cluster_labels) seg_select[seg==label] = label
   res$seg_select = seg_select
