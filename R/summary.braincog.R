@@ -10,12 +10,16 @@ summary.braincog = function(fit) {
   # extract from results
   pvalues = fit$pvalues
   cs_perm = fit$cs_perm
+  
+  # cluster colors
+  color = brewer.pal(n = 9, name = "Set1")[1:length(pvalues)]
+  color[is.na(color)] = "black"
 
   # make table to summarize everyting
   tibble(id = 1:length(pvalues),
          label = 2:(length(pvalues)+1), # offset by one for background
          size = cs_perm[1,1:length(pvalues)],
-         color = brewer.pal(n = length(pvalues), name = "Set1"),
+         color = color,
          pvalue = pvalues,
          pvalue_adj = pvalues %>%
            p.adjust(method = "BH") %>%
