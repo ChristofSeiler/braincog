@@ -20,6 +20,15 @@ plot.braincog = function(fit,cluster_id) {
   # color cluster
   color_arr[ seg == tb$label ] = tb$color
 
+  # remove margin
+  crop_x = 20
+  crop_y = 20
+  crop_z = 20
+  dims = dim(color_arr)
+  color_arr = color_arr[(crop_x+1):(dims[1]-crop_x),
+                        (crop_y+1):(dims[2]-crop_y),
+                        (crop_z+1):(dims[3]-crop_z)]
+
   # extract slices centered at median cluster position
   saggital = plot_cluster(color_arr,color = tb$color,axis = 1)
   coronal = plot_cluster(color_arr,color = tb$color,axis = 2)
