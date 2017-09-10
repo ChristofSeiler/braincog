@@ -86,8 +86,6 @@ braincog = function(fac,
                    function(k) mean(cs_perm[1,k] <= cs_perm[,k]))
   # keep only pvalues that are bigger than predefined min detectable size
   pvalues = pvalues[cs_perm[1,] > min_clustersize]
-  cluster_labels = which(p.adjust(pvalues,method = "BH") < alpha) +
-    1 # add one to account for background
 
   # save everything in result list
   res = NULL
@@ -104,7 +102,6 @@ braincog = function(fac,
   res$seg = seg
   res$cs_perm = cs_perm
   res$pvalues = pvalues
-  res$cluster_labels = cluster_labels
 
   # define class for plotting and summary
   class(res) = "braincog"
