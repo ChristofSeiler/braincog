@@ -4,7 +4,7 @@
 \alias{plot.braincog}
 \title{Plot braincog object.}
 \usage{
-\method{plot}{braincog}(fit, axis = 3)
+\method{plot}{braincog}(fit, cluster_id)
 }
 \description{
 Plot braincog object.

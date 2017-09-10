@@ -2,10 +2,10 @@
 % Please edit documentation in R/plot_statistic.R
 \name{plot_statistic}
 \alias{plot_statistic}
-\title{Extract mid-plane slice and display.}
+\title{Plot null distribution of test statistic.}
 \usage{
 plot_statistic(fit, cluster_id = 1)
 }
 \description{
-Extract mid-plane slice and display.
+Plot null distribution of test statistic.
 }
