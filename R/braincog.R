@@ -64,7 +64,8 @@ braincog = function(fac,
 
   # extract cognitive scores abolute differences
   delta_cog_perm = lapply(perm_list,
-                          function(perm) as.tibble(perm$delta_cog)) %>% bind_cols %>% t
+                          function(perm) as.tibble(perm$delta_cog)) %>% bind_cols %>% t %>% as.tibble
+  names(delta_cog_perm) = names(cognition)
 
   # save everything in result list
   res = NULL
