@@ -26,33 +26,6 @@ braincog = function(fac,
   fac_list = lapply(seq(num_perm-1),function(i) sample(fac))
   fac_list = append(list(fac),fac_list)
 
-  # for cluster
-  fun = function(fac,morphometry,cognition,gray_matter,penaltyz,return_seg = FALSE) {
-    library("braincog")
-
-    # define max number of cluster sizes
-    top = 1000
-
-    # compute the difference vector
-    sign_diff = compute_cca_da(fac = fac,
-                               morphometry = morphometry,
-                               cognition = cognition,
-                               penaltyz = penaltyz)
-
-    # convert to image
-    sign_diff_arr = array(0, # background
-                          dim = dim(gray_matter))
-    sign_diff_arr[gray_matter==1] = sign_diff
-
-    # label connected components
-    seg = label_cluster(sign_diff_arr)
-
-    # count component size (background is excluded)
-    cs = tibble(cluster_size(k = 1:top,arr = seg))
-
-    if(return_seg) return(seg) else return(cs)
-  }
-
   # run either on slurm cluster or multi-threaded
   param = NULL
   if(slurm) {
@@ -74,18 +47,24 @@ braincog = function(fac,
                            cleanup = FALSE,
                            seed = seed)
   }
-  cs_perm = bplapply(fac_list,
-                     fun,
-                     BPPARAM = param,
-                     morphometry = morphometry,
-                     cognition = cognition,
-                     gray_matter = gray_matter,
-                     penaltyz = penaltyz) %>% bind_cols %>% t
+  perm_list = bplapply(fac_list,
+                       compute_cca_da,
+                       BPPARAM = param,
+                       morphometry = morphometry,
+                       cognition = cognition,
+                       gray_matter = gray_matter,
+                       penaltyz = penaltyz)
+  # extract cluster sizes
+  cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_cols %>% t
   cs_perm[is.na(cs_perm)] = 0
   pvalues = sapply(seq(ncol(cs_perm)),
                    function(k) mean(cs_perm[1,k] <= cs_perm[,k]))
   # keep only pvalues that are bigger than predefined min detectable size
   pvalues = pvalues[cs_perm[1,] > min_clustersize]
+
+  # extract cognitive scores abolute differences
+  delta_cog_perm = lapply(perm_list,
+                          function(perm) as.tibble(perm$delta_cog)) %>% bind_cols %>% t
 
   # save everything in result list
   res = NULL
@@ -98,10 +77,11 @@ braincog = function(fac,
   res$num_cores = num_cores
   res$seed = seed
   # recompute the unpermuted case
-  seg = fun(fac,morphometry,cognition,gray_matter,penaltyz,return_seg = TRUE)
-  res$seg = seg
+  res$seg = compute_cca_da(fac,morphometry,cognition,gray_matter,penaltyz,
+                           return_seg = TRUE)$seg
   res$cs_perm = cs_perm
   res$pvalues = pvalues
+  res$delta_cog_perm = delta_cog_perm
 
   # define class for plotting and summary
   class(res) = "braincog"

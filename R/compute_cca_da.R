@@ -3,7 +3,16 @@
 #' @import PMA
 #' @export
 #'
-compute_cca_da = function(fac, morphometry, cognition, penaltyz) {
+compute_cca_da = function(fac,
+                          morphometry,
+                          cognition,
+                          gray_matter,
+                          penaltyz,
+                          return_seg = FALSE,
+                          top = 1000 # define max number of cluster sizes
+                          ) {
+  # need to load it here in case this function is run on the cluster
+  library("braincog")
 
   # split groups into two data
   data_list = lapply(levels(fac),function(group) {
@@ -42,8 +51,24 @@ compute_cca_da = function(fac, morphometry, cognition, penaltyz) {
     else if(sign(v1)== 1 & sign(v2)== 0) delta = 4
     delta
   }
-  sign_diff = sapply(seq_along(res_cca_list[[1]]$v),
+  delta_brain = sapply(seq_along(res_cca_list[[1]]$v),
                      function(i) delta_v(res_cca_list[[1]]$v[i],
                                          res_cca_list[[2]]$v[i]))
-  sign_diff
+  delta_cog =  abs(res_cca_list[[1]]$u) - abs(res_cca_list[[2]]$u)
+
+  # convert to image
+  delta_brain_arr = array(0, # background
+                          dim = dim(gray_matter))
+  delta_brain_arr[gray_matter==1] = delta_brain
+
+  # label connected components
+  seg = label_cluster(delta_brain_arr)
+
+  # count component size (background is excluded)
+  cs = tibble(perm = cluster_size(k = 1:top,arr = seg))
+
+  if(!return_seg) seg = NULL
+  list(cs = cs,
+       seg = seg,
+       delta_cog = delta_cog)
 }
