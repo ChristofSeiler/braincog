@@ -17,7 +17,9 @@ plot_cognition = function(fit,domain_mapping,alpha = 0.05) {
     test = names(delta_cog_perm),
     pvalues = apply(delta_cog_perm, 2, function(v) mean(abs(v[1]) <= abs(v))),
     pvalues_adj = p.adjust(pvalues,method = "BH"),
-    FDR = ifelse(test = pvalues_adj <= alpha, yes = "FDR <= 0.1", no = "FDR > 0.1")
+    FDR = ifelse(test = pvalues_adj <= alpha,
+                 yes = paste("FDR <=",alpha),
+                 no = paste("FDR >",alpha))
   )
 
   # merge domain with main table
