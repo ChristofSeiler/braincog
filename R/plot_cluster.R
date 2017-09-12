@@ -23,14 +23,14 @@ plot_cluster = function(color_arr,color,axis) {
   slice_long = reshape2::melt(slice)
   x_labl = y_lab = ""
   if (axis ==  1) {
-    x_lab = "Anterior <---> Posterior"
-    y_lab = "Inferior <---> Superior"
+    x_lab = "anterior <-> posterior"
+    y_lab = "inferior <-> superior"
   } else if (axis == 2) {
-    x_lab = "Right <---> Left"
-    y_lab = "Inferior <---> Superior"
+    x_lab = "right <-> left"
+    y_lab = "inferior <-> superior"
   } else if (axis == 3) {
-    x_lab = "Right <---> Left"
-    y_lab = "Posterior <---> Anterior"
+    x_lab = "right <-> left"
+    y_lab = "posterior <-> anterior"
   }
   ggplot(slice_long, aes(x = Var1, y = Var2, fill = value)) +
     geom_raster() +
