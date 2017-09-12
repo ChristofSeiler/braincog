@@ -57,15 +57,11 @@ braincog = function(fac,
   # extract cluster sizes
   cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_cols %>% t
   cs_perm[is.na(cs_perm)] = 0
-  pvalues = sapply(seq(ncol(cs_perm)),
-                   function(k) mean(cs_perm[1,k] <= cs_perm[,k]))
-  # keep only pvalues that are bigger than predefined min detectable size
-  pvalues = pvalues[cs_perm[1,] > min_clustersize]
 
   # extract cognitive scores abolute differences
-  delta_cog_perm = lapply(perm_list,
-                          function(perm) as.tibble(perm$delta_cog)) %>% bind_cols %>% t %>% as.tibble
-  names(delta_cog_perm) = names(cognition)
+  #perm_list = lapply(1:10,function(i) { perm = NULL; perm$delta_cog = rnorm(n = 100); perm })
+  delta_cog_perm = lapply(perm_list, function(perm) perm$delta_cog) %>% bind_cols %>% t
+  colnames(delta_cog_perm) = colnames(cognition)
 
   # save everything in result list
   res = NULL
@@ -81,7 +77,6 @@ braincog = function(fac,
   res$seg = compute_cca_da(fac,morphometry,cognition,gray_matter,penaltyz,
                            return_seg = TRUE)$seg
   res$cs_perm = cs_perm
-  res$pvalues = pvalues
   res$delta_cog_perm = delta_cog_perm
 
   # define class for plotting and summary

@@ -54,7 +54,7 @@ compute_cca_da = function(fac,
   delta_brain = sapply(seq_along(res_cca_list[[1]]$v),
                      function(i) delta_v(res_cca_list[[1]]$v[i],
                                          res_cca_list[[2]]$v[i]))
-  delta_cog =  abs(res_cca_list[[1]]$u) - abs(res_cca_list[[2]]$u)
+  delta_cog =  tibble(perm = abs(res_cca_list[[1]]$u) - abs(res_cca_list[[2]]$u))
 
   # convert to image
   delta_brain_arr = array(0, # background

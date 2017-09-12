@@ -5,11 +5,12 @@
 #' @import reshape2
 #' @import dplyr
 #' @import tibble
+#' @export
 #'
-plot_cognition = function(fit,domain_mapping,alpha = 0.1) {
+plot_cognition = function(fit,domain_mapping,alpha = 0.05) {
 
   # extract from fit object
-  delta_cog_perm = fit$delta_cog_perm
+  delta_cog_perm = as.tibble(fit$delta_cog_perm)
 
   # compute pvalues
   selection = tibble(

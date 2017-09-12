@@ -4,7 +4,7 @@
 \alias{plot_cognition}
 \title{Plot permutation results of cognitive tests.}
 \usage{
-plot_cognition(fit, domain_mapping, alpha = 0.1)
+plot_cognition(fit, domain_mapping, alpha = 0.05)
 }
 \description{
 Plot permutation results of cognitive tests.
