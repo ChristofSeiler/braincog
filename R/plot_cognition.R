@@ -15,9 +15,9 @@ plot_cognition = function(fit,domain_mapping,alpha = 0.05) {
   # compute pvalues
   selection = tibble(
     test = names(delta_cog_perm),
-    pvalues = apply(delta_cog_perm, 2, function(v) mean(abs(v[1]) <= abs(v))),
-    pvalues_adj = p.adjust(pvalues,method = "BH"),
-    FDR = ifelse(test = pvalues_adj <= alpha,
+    pvalue = apply(delta_cog_perm, 2, function(v) mean(abs(v[1]) <= abs(v))),
+    pvalue_adj = p.adjust(pvalue,method = "BH"),
+    FDR = ifelse(test = pvalue_adj <= alpha,
                  yes = paste("FDR <=",alpha),
                  no = paste("FDR >",alpha))
   )
