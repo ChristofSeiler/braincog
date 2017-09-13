@@ -31,7 +31,7 @@ braincog = function(fac,
   if(slurm) {
     slurm_settings = system.file("exec", "slurm.tmpl", package = "braincog")
     param = BatchJobsParam(workers = length(fac_list),
-                           resources = list(ntasks=1,ncpus=1,mem=8000,walltime=10),
+                           resources = list(ntasks=1,ncpus=1,mem=8000,walltime=180),
                            cluster.functions = makeClusterFunctionsSLURM(slurm_settings),
                            log = TRUE,
                            logdir = ".",
@@ -53,7 +53,8 @@ braincog = function(fac,
                        morphometry = morphometry,
                        cognition = cognition,
                        gray_matter = gray_matter,
-                       penaltyz = penaltyz)
+                       penaltyz = penaltyz,
+                       return_seg = TRUE)
   # extract cluster sizes
   cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_cols %>% t
   cs_perm[is.na(cs_perm)] = 0

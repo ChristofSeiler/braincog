@@ -24,22 +24,22 @@ compute_cca_da = function(fac,
 
   # run two separate sparse CCA
   res_cca_list = lapply(data_list,function(data) {
-    # penaltyzs = seq(0.1,0.5,0.1)
-    # perm_out = CCA.permute(x = data$X, z = data$Z,
-    #                        typex = "standard",
-    #                        typez = "standard",
-    #                        penaltyxs = 1,
-    #                        penaltyzs = penaltyzs,
-    #                        standardize = TRUE,
-    #                        nperms = 20)
+    penaltyzs = seq(0.1,0.5,0.1)
+    perm_out = CCA.permute(x = data$X, z = data$Z,
+                           typex = "standard",
+                           typez = "standard",
+                           penaltyxs = 1,
+                           penaltyzs = penaltyzs,
+                           standardize = TRUE,
+                           nperms = 20)
     CCA(x = data$X, z = data$Z,
         typex = "standard",
         typez = "standard",
         penaltyx = 1,
-        penaltyz = penaltyz,
-        #penaltyz = perm_out$bestpenaltyz,
-        standardize = FALSE)
-        #, v = perm_out$v.init)
+        #penaltyz = penaltyz,
+        penaltyz = perm_out$bestpenaltyz,
+        standardize = FALSE, #)
+        v = perm_out$v.init)
   })
 
   # difference in coefficients
@@ -71,5 +71,7 @@ compute_cca_da = function(fac,
   if(!return_seg) seg = NULL
   list(cs = cs,
        seg = seg,
-       delta_cog = delta_cog)
+       delta_cog = delta_cog,
+       penaltyz = sapply(res_cca_list,
+                         function(res_cca) res_cca$penaltyz))
 }
