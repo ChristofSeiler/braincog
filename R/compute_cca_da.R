@@ -22,24 +22,31 @@ compute_cca_da = function(fac,
     data
   })
 
-  # run two separate sparse CCA
-  res_cca_list = lapply(data_list,function(data) {
+  # find optimal regularization parameter
+  res_cca_perm_list = lapply(data_list,function(data) {
     penaltyzs = seq(0.1,0.5,0.1)
-    perm_out = CCA.permute(x = data$X, z = data$Z,
-                           typex = "standard",
-                           typez = "standard",
-                           penaltyxs = 1,
-                           penaltyzs = penaltyzs,
-                           standardize = FALSE,
-                           nperms = 20)
+    CCA.permute(x = data$X, z = data$Z,
+                typex = "standard",
+                typez = "standard",
+                penaltyxs = 1,
+                penaltyzs = penaltyzs,
+                standardize = FALSE,
+                nperms = 20)
+  })
+
+  # match regularization parameter: take the minimum
+  penaltyz = sapply(res_cca_perm_list,
+                    function(res_cca_perm) res_cca_perm$bestpenaltyz)
+  bestpenaltyz = min(penaltyz)
+
+  # run two separate sparse CCA with common regulariztion parameter
+  res_cca_list = lapply(data_list,function(data) {
     CCA(x = data$X, z = data$Z,
-        typex = "standard",
+      typex = "standard",
         typez = "standard",
         penaltyx = 1,
-        #penaltyz = penaltyz,
-        penaltyz = perm_out$bestpenaltyz,
-        standardize = FALSE, #)
-        v = perm_out$v.init)
+        penaltyz = bestpenaltyz,
+        standardize = FALSE)
   })
 
   # difference in coefficients
@@ -72,6 +79,6 @@ compute_cca_da = function(fac,
   list(cs = cs,
        seg = seg,
        delta_cog = delta_cog,
-       penaltyz = sapply(res_cca_list,
-                         function(res_cca) res_cca$penaltyz))
+       penaltyz = penaltyz,
+       bestpenaltyz = bestpenaltyz)
 }

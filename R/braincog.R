@@ -53,8 +53,7 @@ braincog = function(fac,
                        morphometry = morphometry,
                        cognition = cognition,
                        gray_matter = gray_matter,
-                       penaltyz = penaltyz,
-                       return_seg = TRUE)
+                       penaltyz = penaltyz)
   # extract cluster sizes
   cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_cols %>% t
   cs_perm[is.na(cs_perm)] = 0
@@ -79,6 +78,7 @@ braincog = function(fac,
                            return_seg = TRUE)$seg
   res$cs_perm = cs_perm
   res$delta_cog_perm = delta_cog_perm
+  res$fac_list = fac_list
 
   # define class for plotting and summary
   class(res) = "braincog"
