@@ -30,7 +30,7 @@ compute_cca_da = function(fac,
                            typez = "standard",
                            penaltyxs = 1,
                            penaltyzs = penaltyzs,
-                           standardize = TRUE,
+                           standardize = FALSE,
                            nperms = 20)
     CCA(x = data$X, z = data$Z,
         typex = "standard",
