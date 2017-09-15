@@ -53,13 +53,11 @@ braincog = function(fac,
                        cognition = cognition,
                        gray_matter = gray_matter)
   # extract cluster sizes
-  cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_cols %>% t
+  cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_rows
   cs_perm[is.na(cs_perm)] = 0
 
   # extract cognitive scores abolute differences
-  #perm_list = lapply(1:10,function(i) { perm = NULL; perm$delta_cog = rnorm(n = 100); perm })
-  delta_cog_perm = lapply(perm_list, function(perm) perm$delta_cog) %>% bind_cols %>% t
-  colnames(delta_cog_perm) = colnames(cognition)
+  delta_cog_perm = lapply(perm_list, function(perm) perm$delta_cog) %>% bind_rows
 
   # save everything in result list
   res = NULL
