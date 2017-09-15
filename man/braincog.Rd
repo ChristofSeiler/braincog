@@ -4,7 +4,7 @@
 \alias{braincog}
 \title{Differential sparse canonical correlation analysis.}
 \usage{
-braincog(fac, morphometry, cognition, gray_matter, penaltyz, min_clustersize,
+braincog(fac, morphometry, cognition, gray_matter, min_clustersize,
   num_perm = 1000, alpha = 0.05, slurm = FALSE, num_cores = 4,
   seed = 56026)
 }

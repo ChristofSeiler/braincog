@@ -14,7 +14,6 @@ braincog = function(fac,
                     morphometry,
                     cognition,
                     gray_matter,
-                    penaltyz,
                     min_clustersize,
                     num_perm = 1000,
                     alpha = 0.05,
@@ -48,12 +47,11 @@ braincog = function(fac,
                            seed = seed)
   }
   perm_list = bplapply(fac_list,
-                       compute_cca_da,
+                       compute_cca_da2,
                        BPPARAM = param,
                        morphometry = morphometry,
                        cognition = cognition,
-                       gray_matter = gray_matter,
-                       penaltyz = penaltyz)
+                       gray_matter = gray_matter)
   # extract cluster sizes
   cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_cols %>% t
   cs_perm[is.na(cs_perm)] = 0
@@ -66,7 +64,7 @@ braincog = function(fac,
   # save everything in result list
   res = NULL
   res$gray_matter = gray_matter
-  res$penaltyz = penaltyz
+  res$penaltyz = perm_list[[1]]$bestpenaltyz
   res$min_clustersize = min_clustersize
   res$num_perm = num_perm
   res$alpha = alpha
@@ -74,8 +72,9 @@ braincog = function(fac,
   res$num_cores = num_cores
   res$seed = seed
   # recompute the unpermuted case
-  res$seg = compute_cca_da(fac,morphometry,cognition,gray_matter,penaltyz,
-                           return_seg = TRUE)$seg
+  res$seg = compute_cca_da2(fac,morphometry,cognition,gray_matter,
+                            penaltyz = perm_list[[1]]$bestpenaltyz,
+                            return_seg = TRUE)$seg
   res$cs_perm = cs_perm
   res$delta_cog_perm = delta_cog_perm
   res$fac_list = fac_list
