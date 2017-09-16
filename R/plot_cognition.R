@@ -10,18 +10,19 @@
 plot_cognition = function(fit,domain_mapping,alpha = 0.05) {
 
   # extract from fit object
-  delta_cog_perm = as.tibble(fit$delta_cog_perm)
+  delta_cog_perm = abs(fit$delta_cog_perm)
+  
+  # add diagnosis
+  domain_mapping %<>% add_row(test = "Diagnosis", domain = "Diagnosis")
 
   # compute pvalues
-  selection = tibble(
-    test = names(delta_cog_perm),
-    pvalue = apply(delta_cog_perm, 2, function(v) mean(abs(v[1]) <= abs(v))),
-    pvalue_adj = p.adjust(pvalue,method = "BH"),
-    FDR = ifelse(test = pvalue_adj <= alpha,
+  selection = summary_cognition(fit)
+  selection %<>% add_column(
+    FDR = ifelse(test = tb_summary$pvalue_adj <= alpha,
                  yes = paste("FDR <=",alpha),
                  no = paste("FDR >",alpha))
   )
-
+  
   # merge domain with main table
   delta_long = delta_cog_perm %>% add_column(permutation = 1:nrow(delta_cog_perm))
   delta_long %<>% reshape2::melt(id.vars = "permutation")
@@ -36,7 +37,8 @@ plot_cognition = function(fit,domain_mapping,alpha = 0.05) {
                       score = as.numeric(delta_cog_perm[1,]))
   delta_obsv %<>% inner_join(selection, by = "test")
   ggplot(delta_long,aes(x = test, y = value, color = domain)) +
-    geom_boxplot() +
+    #geom_boxplot() +
+    geom_violin() +
     geom_point(data = delta_obsv, aes(x = test, y = score),colour = "black") +
     xlab("cognitive tests") +
     ylab("coefficients") +

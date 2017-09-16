@@ -12,8 +12,8 @@ summary.braincog = function(fit) {
   min_clustersize = fit$min_clustersize
 
   # compute pvalues for morphometry
-  pvalues = sapply(seq(ncol(cs_perm)),
-                   function(k) mean(cs_perm[1,k] <= cs_perm[,k]))
+  pvalues = apply(cs_perm, 2, function(cs) mean(cs[1] <= cs))
+  
   # keep only pvalues that are bigger than predefined min detectable size
   pvalues = pvalues[cs_perm[1,] > min_clustersize]
 
@@ -24,7 +24,7 @@ summary.braincog = function(fit) {
   # make table to summarize everyting
   tibble(id = seq(pvalues),
          label = seq(pvalues)+1, # offset by one for background
-         size = cs_perm[1,seq(pvalues)],
+         size = as.numeric(cs_perm[1,seq(pvalues)]),
          color = color,
          pvalue = pvalues,
          pvalue_adj = pvalues %>%
