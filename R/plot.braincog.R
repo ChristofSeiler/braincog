@@ -23,6 +23,6 @@ plot.braincog = function(fit,cluster_id) {
   # remove margin and extract slices centered at median cluster position
   combine_slices(color_arr,
                  center_color = tb$color,
-                 crop = 20,
+                 crop = 15,
                  title = paste("Cluster",tb$id))
 }
