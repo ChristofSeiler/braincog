@@ -21,8 +21,8 @@ compute_cca_da2 = function(fac,
     scale(center = TRUE,scale = TRUE)
 
   # find optimal regulariztion parameter
-  #penaltyzs = seq(0.1,0.5,0.1)
-  penaltyzs = seq(0.05,0.3,0.05)
+  penaltyzs = seq(0.1,0.5,0.1)
+  #penaltyzs = seq(0.05,0.3,0.05)
   bestpenaltyz = penaltyz
   if(is.null(bestpenaltyz)) {
     cca_perm = CCA.permute(x = cognition, z = morphometry,
