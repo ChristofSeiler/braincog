@@ -18,7 +18,7 @@ plot_cognition = function(fit,domain_mapping,alpha = 0.05) {
   # compute pvalues
   selection = summary_cognition(fit)
   selection %<>% add_column(
-    FDR = ifelse(test = tb_summary$pvalue_adj <= alpha,
+    FDR = ifelse(test = selection$pvalue_adj <= alpha,
                  yes = paste("FDR <=",alpha),
                  no = paste("FDR >",alpha))
   )
