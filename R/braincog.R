@@ -62,6 +62,7 @@ braincog = function(fac,
   # save everything in result list
   res = NULL
   res$gray_matter = gray_matter
+  res$penaltyx = perm_list[[1]]$bestpenaltyx
   res$penaltyz = perm_list[[1]]$bestpenaltyz
   res$min_clustersize = min_clustersize
   res$num_perm = num_perm
@@ -71,7 +72,8 @@ braincog = function(fac,
   res$seed = seed
   # recompute the unpermuted case
   res$seg = compute_cca_da2(fac,morphometry,cognition,gray_matter,
-                            penaltyz = perm_list[[1]]$bestpenaltyz,
+                            penaltyx = res$penaltyx,
+                            penaltyz = res$penaltyz,
                             return_seg = TRUE)$seg
   res$cs_perm = cs_perm
   res$delta_cog_perm = delta_cog_perm

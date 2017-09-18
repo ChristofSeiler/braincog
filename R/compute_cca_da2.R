@@ -7,6 +7,7 @@ compute_cca_da2 = function(fac,
                            morphometry,
                            cognition,
                            gray_matter,
+                           penaltyx = NULL,
                            penaltyz = NULL,
                            return_seg = FALSE,
                            top = 1000 # define max number of cluster sizes
@@ -21,17 +22,19 @@ compute_cca_da2 = function(fac,
     scale(center = TRUE,scale = TRUE)
 
   # find optimal regulariztion parameter
-  penaltyzs = seq(0.1,0.5,0.1)
-  #penaltyzs = seq(0.05,0.3,0.05)
+  bestpenaltyx = penaltyx
   bestpenaltyz = penaltyz
-  if(is.null(bestpenaltyz)) {
+  if(is.null(bestpenaltyx) | is.null(bestpenaltyz)) {
+    penalty_pairs = expand.grid(penaltyxs = seq(0.1,0.4,0.1),
+                                penaltyzs = seq(0.1,0.4,0.1))
     cca_perm = CCA.permute(x = cognition, z = morphometry,
                            typex = "standard",
                            typez = "standard",
-                           penaltyxs = 1,
-                           penaltyzs = penaltyzs,
+                           penaltyxs = penalty_pairs$penaltyxs,
+                           penaltyzs = penalty_pairs$penaltyzs,
                            standardize = FALSE,
-                           nperms = 20)
+                           nperms = 10)
+    bestpenaltyx = cca_perm$bestpenaltyx
     bestpenaltyz = cca_perm$bestpenaltyz
   }
 
@@ -39,7 +42,7 @@ compute_cca_da2 = function(fac,
   cca = CCA(x = cognition, z = morphometry,
             typex = "standard",
             typez = "standard",
-            penaltyx = 1,
+            penaltyx = bestpenaltyx,
             penaltyz = bestpenaltyz,
             standardize = FALSE)
 
@@ -64,6 +67,8 @@ compute_cca_da2 = function(fac,
   list(cs = cs,
        seg = seg,
        delta_cog = delta_cog,
+       penaltyxs = penaltyxs,
        penaltyzs = penaltyzs,
+       bestpenaltyx = bestpenaltyx,
        bestpenaltyz = bestpenaltyz)
 }
