@@ -7,10 +7,12 @@
 #' @import tibble
 #' @export
 #'
-plot_cognition = function(fit,domain_mapping,alpha = 0.05) {
+plot_cognition = function(fit,domain_mapping,alpha = 0.05,studentize = TRUE) {
 
   # extract from fit object
   delta_cog_perm = abs(fit$delta_cog_perm)
+  if(studentize)
+    delta_cog_perm %<>% mutate_all(function(v) (v-mean(v))/sd(v))
   
   # add diagnosis
   domain_mapping %<>% add_row(test = "Diagnosis", domain = "Diagnosis")

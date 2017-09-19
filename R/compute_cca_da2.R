@@ -25,7 +25,7 @@ compute_cca_da2 = function(fac,
   bestpenaltyx = penaltyx
   bestpenaltyz = penaltyz
   penalty_pairs = expand.grid(penaltyxs = 1,
-                              penaltyzs = seq(0.1,0.3,0.1))
+                              penaltyzs = seq(0.1,0.2,0.1))
   if(is.null(bestpenaltyx) | is.null(bestpenaltyz)) {
     cca_perm = CCA.permute(x = cognition, z = morphometry,
                            typex = "standard",

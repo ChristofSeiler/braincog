@@ -10,7 +10,10 @@ summary_cognition = function(fit) {
   # compute pvalues
   tibble(
     test = names(delta_cog_perm),
-    pvalue = apply(delta_cog_perm, 2, function(v) mean(v[1] <= v)),
+    pvalue = apply(delta_cog_perm, 2, function(v) {
+      v_student = (v-mean(v))/sd(v)
+      mean(v_student[1] <= v_student)
+    }),
     pvalue_adj = p.adjust(pvalue,method = "BH")
   )
 }
