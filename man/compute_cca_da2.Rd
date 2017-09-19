@@ -4,8 +4,8 @@
 \alias{compute_cca_da2}
 \title{Compute difference vector.}
 \usage{
-compute_cca_da2(fac, morphometry, cognition, gray_matter, penaltyz = NULL,
-  return_seg = FALSE, top = 1000)
+compute_cca_da2(fac, morphometry, cognition, gray_matter, penaltyx = NULL,
+  penaltyz = NULL, return_seg = FALSE, top = 1000)
 }
 \description{
 Compute difference vector.

@@ -24,9 +24,9 @@ compute_cca_da2 = function(fac,
   # find optimal regulariztion parameter
   bestpenaltyx = penaltyx
   bestpenaltyz = penaltyz
+  penalty_pairs = expand.grid(penaltyxs = seq(0.1,0.4,0.1),
+                              penaltyzs = seq(0.1,0.4,0.1))
   if(is.null(bestpenaltyx) | is.null(bestpenaltyz)) {
-    penalty_pairs = expand.grid(penaltyxs = seq(0.1,0.4,0.1),
-                                penaltyzs = seq(0.1,0.4,0.1))
     cca_perm = CCA.permute(x = cognition, z = morphometry,
                            typex = "standard",
                            typez = "standard",
@@ -67,8 +67,7 @@ compute_cca_da2 = function(fac,
   list(cs = cs,
        seg = seg,
        delta_cog = delta_cog,
-       penaltyxs = penaltyxs,
-       penaltyzs = penaltyzs,
+       penalty_pairs = penalty_pairs,
        bestpenaltyx = bestpenaltyx,
        bestpenaltyz = bestpenaltyz)
 }
