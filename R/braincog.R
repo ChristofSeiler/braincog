@@ -29,8 +29,8 @@ braincog = function(fac,
   param = NULL
   if(slurm) {
     slurm_settings = system.file("exec", "slurm.tmpl", package = "braincog")
-    param = BatchJobsParam(workers = length(fac_list),
-                           resources = list(ntasks=1,ncpus=1,mem=10000,walltime=60),
+    param = BatchJobsParam(workers = min(length(fac_list),2500),
+                           resources = list(ntasks=1,ncpus=1,mem=10000,walltime=120),
                            cluster.functions = makeClusterFunctionsSLURM(slurm_settings),
                            log = TRUE,
                            logdir = ".",
