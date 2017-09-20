@@ -58,6 +58,17 @@ compute_cca_da2 = function(fac,
   # count component size (background is excluded)
   cs = cluster_size(k = 1:top,arr = seg) %>% as.vector %>% t %>% as.tibble
   names(cs) = paste0("cluster_",1:top)
+  
+  # measure weighted cluster size
+  coeff_arr = array(0, # background
+                    dim = dim(gray_matter))
+  coeff_arr[gray_matter==1] = cca$v
+  cs_weighted = sapply(1:top,
+                       function(k) cluster_size_weighted(k = k,
+                                                         seg_arr = seg,
+                                                         coeff_arr = coeff_arr)) %>% 
+    as.vector %>% t %>% as.tibble
+  names(cs_weighted) = paste0("cluster_",1:top)
 
   # convert cognition loadings into a tibble
   delta_cog = cca$u %>% t %>% as.tibble
@@ -65,6 +76,7 @@ compute_cca_da2 = function(fac,
 
   if(!return_seg) seg = NULL
   list(cs = cs,
+       cs_weighted = cs_weighted,
        seg = seg,
        delta_cog = delta_cog,
        penalty_pairs = penalty_pairs,
