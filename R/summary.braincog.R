@@ -9,10 +9,11 @@ summary.braincog = function(fit) {
 
   # extract from results
   cs_perm = fit$cs_perm
+  cs_perm_weighted = fit$cs_perm_weighted
   min_clustersize = fit$min_clustersize
 
   # compute pvalues for morphometry
-  pvalues = apply(cs_perm, 2, function(cs) {
+  pvalues = apply(cs_perm_weighted, 2, function(cs) {
     cs_student = (cs-mean(cs))/sd(cs)
     mean(cs_student[1] <= cs_student)
   })
