@@ -44,7 +44,7 @@ plot_cognition = function(fit,domain_mapping,alpha = 0.05,studentize = TRUE) {
     geom_point(data = delta_obsv, aes(x = test, y = score),colour = "black") +
     xlab("cognitive tests") +
     ylab("coefficients") +
-    labs(title = "Absoulte Difference Between Turner vs. Control") +
+    labs(title = "Test Statistic of Cognition and Diagnosis") +
     theme(axis.text.x=element_text(angle=45, hjust=1)) +
     coord_flip() +
     facet_wrap(~FDR)
