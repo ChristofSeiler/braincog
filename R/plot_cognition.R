@@ -10,9 +10,13 @@
 plot_cognition = function(fit,domain_mapping,alpha = 0.05,studentize = TRUE) {
 
   # extract from fit object
-  delta_cog_perm = abs(fit$delta_cog_perm)
-  if(studentize)
-    delta_cog_perm %<>% mutate_all(function(v) (v-mean(v))/sd(v))
+  delta_cog_perm = fit$delta_cog_perm
+  
+  # compute pvalues
+  statistic = delta_cog_perm %>% 
+    abs %>%
+    mutate_all(function(v) (v-mean(v))/sd(v)) %>% 
+    abs
   
   # add diagnosis
   domain_mapping %<>% add_row(test = "Diagnosis", domain = "Diagnosis")
@@ -26,7 +30,7 @@ plot_cognition = function(fit,domain_mapping,alpha = 0.05,studentize = TRUE) {
   )
   
   # merge domain with main table
-  delta_long = delta_cog_perm %>% add_column(permutation = 1:nrow(delta_cog_perm))
+  delta_long = statistic %>% add_column(permutation = 1:nrow(statistic))
   delta_long %<>% reshape2::melt(id.vars = "permutation")
   delta_long %<>% dplyr::rename(test = "variable")
   delta_long$test %<>% as.character
@@ -35,8 +39,8 @@ plot_cognition = function(fit,domain_mapping,alpha = 0.05,studentize = TRUE) {
   delta_long$test = factor(delta_long$test, levels = domain_mapping$test)
 
   # overlay obvserved statistics onto null distribuiton
-  delta_obsv = tibble(test = names(delta_cog_perm),
-                      score = as.numeric(delta_cog_perm[1,]))
+  delta_obsv = tibble(test = colnames(statistic),
+                      score = as.numeric(statistic[1,]))
   delta_obsv %<>% inner_join(selection, by = "test")
   ggplot(delta_long,aes(x = test, y = value, color = domain)) +
     #geom_boxplot() +

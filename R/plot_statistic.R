@@ -4,12 +4,10 @@
 #' @import dplyr
 #' @export
 #'
-plot_statistic = function(fit,cluster_id = 1,studentize = TRUE) {
+plot_statistic = function(fit,cluster_id = 1) {
 
   # extract from results
   tb = as.tibble(fit$cs_perm_weighted)
-  if(studentize)
-    tb %<>% mutate_all(function(cs) (cs-mean(cs))/sd(cs))
 
   # reshape table
   names(tb) = 1:ncol(tb)

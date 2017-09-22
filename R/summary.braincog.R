@@ -13,10 +13,7 @@ summary.braincog = function(fit) {
   min_clustersize = fit$min_clustersize
 
   # compute pvalues for morphometry
-  pvalues = apply(cs_perm_weighted, 2, function(cs) {
-    cs_student = (cs-mean(cs))/sd(cs)
-    mean(cs_student[1] <= cs_student)
-  })
+  pvalues = apply(cs_perm_weighted, 2, function(cs) mean(cs[1] <= cs))
   pvalues[is.na(pvalues)] = 1
   
   # keep only pvalues that are bigger than predefined min detectable size

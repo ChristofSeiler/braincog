@@ -30,12 +30,13 @@ braincog = function(fac,
   if(slurm) {
     slurm_settings = system.file("exec", "slurm.tmpl", package = "braincog")
     param = BatchJobsParam(workers = min(length(fac_list),2500),
-                           resources = list(ntasks=1,ncpus=1,mem=10000,walltime=120),
+                           resources = list(ntasks=1,ncpus=1,mem=10000,walltime=60),
                            cluster.functions = makeClusterFunctionsSLURM(slurm_settings),
                            log = TRUE,
                            logdir = ".",
                            progressbar = TRUE,
                            cleanup = FALSE,
+                           stop.on.error = FALSE,
                            seed = seed)
   } else {
     param = MulticoreParam(workers = num_cores,
@@ -52,6 +53,12 @@ braincog = function(fac,
                        morphometry = morphometry,
                        cognition = cognition,
                        gray_matter = gray_matter)
+
+  # error handling (jobs may fail on the cluster)
+  jobs_success = bpok(perm_list)
+  if(jobs_success[1] == FALSE) stop("The unpermuted case failed.")
+  perm_list = perm_list[jobs_success]
+
   # extract cluster sizes
   cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_rows
   cs_perm[is.na(cs_perm)] = 0
@@ -65,7 +72,7 @@ braincog = function(fac,
   res$penaltyx = perm_list[[1]]$bestpenaltyx
   res$penaltyz = perm_list[[1]]$bestpenaltyz
   res$min_clustersize = min_clustersize
-  res$num_perm = num_perm
+  res$num_perm = length(perm_list)
   res$alpha = alpha
   res$slurm = slurm
   res$num_cores = num_cores

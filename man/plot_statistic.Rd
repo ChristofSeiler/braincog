@@ -4,7 +4,7 @@
 \alias{plot_statistic}
 \title{Plot null distribution of test statistic.}
 \usage{
-plot_statistic(fit, cluster_id = 1, studentize = TRUE)
+plot_statistic(fit, cluster_id = 1)
 }
 \description{
 Plot null distribution of test statistic.
