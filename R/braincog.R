@@ -47,12 +47,28 @@ braincog = function(fac,
                            cleanup = FALSE,
                            seed = seed)
   }
-  perm_list = bplapply(fac_list,
-                       compute_cca_da2,
-                       BPPARAM = param,
-                       morphometry = morphometry,
-                       cognition = cognition,
-                       gray_matter = gray_matter)
+  perm_list = bptry({
+    bplapply(fac_list,
+             compute_cca_da2,
+             BPPARAM = param,
+             morphometry = morphometry,
+             cognition = cognition,
+             gray_matter = gray_matter)
+  })
+
+  # did anything go wrong?
+  tail(attr(perm_list[[which(!bpok(perm_list))]], "traceback"))
+
+  # try one more time
+  perm_list = bptry({
+    bplapply(fac_list,
+             compute_cca_da2,
+             BPREDO = perm_list,
+             BPPARAM = param,
+             morphometry = morphometry,
+             cognition = cognition,
+             gray_matter = gray_matter)
+  })
 
   # error handling (jobs may fail on the cluster)
   jobs_success = bpok(perm_list)
