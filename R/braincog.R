@@ -63,6 +63,10 @@ braincog = function(fac,
   cs_perm = lapply(perm_list,function(perm) perm$cs) %>% bind_rows
   cs_perm[is.na(cs_perm)] = 0
 
+  # extract weighted cluster sizes
+  cs_perm_weighted = lapply(perm_list,function(perm) perm$cs_weighted) %>% bind_rows
+  cs_perm_weighted[is.na(cs_perm_weighted)] = 0
+
   # extract cognitive scores abolute differences
   delta_cog_perm = lapply(perm_list, function(perm) perm$delta_cog) %>% bind_rows
 
@@ -71,6 +75,7 @@ braincog = function(fac,
   res$gray_matter = gray_matter
   res$penaltyx = perm_list[[1]]$bestpenaltyx
   res$penaltyz = perm_list[[1]]$bestpenaltyz
+  res$penalty_pairs = perm_list[[1]]$penalty_pairs
   res$min_clustersize = min_clustersize
   res$num_perm = length(perm_list)
   res$alpha = alpha
@@ -83,6 +88,7 @@ braincog = function(fac,
                             penaltyz = res$penaltyz,
                             return_seg = TRUE)$seg
   res$cs_perm = cs_perm
+  res$cs_perm_weighted = cs_perm_weighted
   res$delta_cog_perm = delta_cog_perm
   res$fac_list = fac_list
 
