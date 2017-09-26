@@ -57,7 +57,8 @@ braincog = function(fac,
   })
 
   # did anything go wrong?
-  tail(attr(perm_list[[which(!bpok(perm_list))]], "traceback"))
+  if(sum(!bpok(perm_list)) > 0)
+    tail(attr(perm_list[[which(!bpok(perm_list))]], "traceback"))
 
   # try one more time
   perm_list = bptry({
