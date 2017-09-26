@@ -18,8 +18,8 @@ plot_statistic = function(fit,cluster_id = 1) {
   tb_long %<>% dplyr::filter(cluster == cluster_id)
 
   ggplot(tb_long,aes(x = size)) +
-    geom_histogram(bins = nrow(tb)/5) +
-    geom_vline(xintercept = as.integer(tb[1,cluster_id]),
+    geom_histogram(binwidth = (tb_long$size %>% range %>% diff) / 50) +
+    geom_vline(xintercept = with(tb_long,size[which(permutation == 1)]),
                color = "red",
                size = 1) +
     ggtitle(paste("Cluster",cluster_id))
